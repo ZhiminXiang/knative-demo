@@ -1,0 +1,29 @@
+apiVersion: serving.knative.dev/v1alpha1
+kind: Service
+metadata:
+  name: app-from-source
+  namespace: default
+spec:
+  runLatest:
+    configuration:
+      build:
+        apiVersion: build.knative.dev/v1alpha1
+        kind: Build
+        spec:
+          source:
+            git:
+              url: https://github.com/mchmarny/simple-app.git
+              revision: master
+          template:
+            name: kaniko
+            arguments:
+              - name: IMAGE
+                value: gcr.io/zhiminx-gke-dev/source-to-url:latest
+      revisionTemplate:
+        spec:
+          container:
+            image: gcr.io/zhiminx-gke-dev/source-to-url:latest
+            imagePullPolicy: Always
+            env:
+            - name: SIMPLE_MSG
+              value: "Hello from the sample app!"
