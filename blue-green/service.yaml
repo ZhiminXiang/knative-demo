@@ -2,16 +2,16 @@ apiVersion: serving.knative.dev/v1alpha1
 kind: Service
 metadata:
   name: blue-green
-  namespace: default
+  namespace: demo
 spec:
   release:
-    revisions: ["place-holder"]
-    # rolloutPercent: 99
+    revisions: ["blue-green-rd9j5", "blue-green-zzj5j"]
+    rolloutPercent: 99
     configuration:
       revisionTemplate:
         spec:
           container:
             image: gcr.io/zhiminx-gke-dev/blue-green
             env:
-            - name: TARGET
-              value: "GREEN GREEN"
+            - name: COLOR
+              value: "green"
